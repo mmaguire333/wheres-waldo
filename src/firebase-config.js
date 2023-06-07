@@ -9,6 +9,7 @@ const firebaseConfig = {
 
 export function getFirebaseConfig() {
     if (!firebaseConfig || !firebaseConfig.apiKey) {
+        // eslint-disable-next-line no-useless-concat
         throw new Error('No Firebase configuration object provided.' + '\n' +
         'Add your web app\'s configuration object to firebase-config.js');
       } else {
