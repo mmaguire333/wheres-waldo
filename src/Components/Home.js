@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 import LevelCard from "./LevelCard";
+import '../Styles/Home.css';
 
 const Home = () => {
     return (
         <div className="Home">
             <div className="level-container">
-                <Link to="/level-one">
-                    <LevelCard></LevelCard>
+                <Link className="link" to="/level-one">
+                    <LevelCard level={1}></LevelCard>
                 </Link>
-                <Link to="/level-two">
-                    <LevelCard></LevelCard>
+                <Link className="link" to="/level-two">
+                    <LevelCard level={2}></LevelCard>
                 </Link>
-                <Link to="/level-three">
-                    <LevelCard></LevelCard>
+                <Link className="link" to="/level-three">
+                    <LevelCard level={3}></LevelCard>
                 </Link>
             </div>
         </div>
