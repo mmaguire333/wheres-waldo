@@ -1,0 +1,26 @@
+.game-image-container, .level-header {
+    width: 95vw;
+    margin: auto;
+}
+
+.game-image-container {
+    margin-bottom: 50px;
+}
+
+.level-header {
+    margin-bottom: 10px;
+}
+
+.game-image-container > img {
+    width: 100%;
+}
+
+.character-previews {
+    display: flex;
+    gap: 20px;
+}
+
+.character-previews > img {
+    height: 60px;
+    border-radius: 3px;
+}
