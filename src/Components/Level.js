@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import PopupList from './PopupList';
 import levelOneImage from '../Assets/Level-Images/waldo-easy-level.png';
 import levelTwoImage from '../Assets/Level-Images/waldo-beach-level.jpeg';
 import levelThreeImage from '../Assets/Level-Images/find-the-fellowship.jpg';
@@ -52,6 +54,23 @@ const Level = (props) => {
             break;
     }
 
+    const [listActive, setListActive] = useState(false);
+    const [popupCoordinates, setPopupCoordinates] = useState({x: -1, y: -1});
+
+    const toggleListActive = () => {
+        if(listActive) {
+            setListActive(false);
+        } else {
+            setListActive(true);
+        }
+    }
+
+    const handleClick = (e) => {
+        let imageRect = e.target.parentElement.getBoundingClientRect();
+        setPopupCoordinates({x: e.clientX - imageRect.left - 100, y: e.clientY - imageRect.top - 30});
+        toggleListActive();
+    }
+
     return (
         <div className="Level">
             <div className="level-header">
@@ -65,7 +84,8 @@ const Level = (props) => {
                 <div className="timer"></div>
             </div>
             <div className="game-image-container">
-                <img src={levelImageSrc} alt="Game Level" />
+                <img src={levelImageSrc} alt="Game Level" onClick={handleClick} />
+                <PopupList active={listActive} coordinates={popupCoordinates} characters={characters}></PopupList>
             </div>
         </div>
     )
