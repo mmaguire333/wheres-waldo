@@ -5,6 +5,7 @@
 
 .game-image-container {
     margin-bottom: 50px;
+    position: relative;
 }
 
 .level-header {
