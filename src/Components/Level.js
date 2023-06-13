@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getCharacterLocations } from '../firebase';
 import PopupList from './PopupList';
+import CharacterMarker from './CharacterMarker';
 import levelOneImage from '../Assets/Level-Images/waldo-easy-level.png';
 import levelTwoImage from '../Assets/Level-Images/waldo-beach-level.jpeg';
 import levelThreeImage from '../Assets/Level-Images/find-the-fellowship.jpg';
@@ -18,6 +20,7 @@ import pippin from '../Assets/Characters/Pippin.jpg'
 import '../Styles/Level.css';
 
 const Level = (props) => {
+    // Set level and character images based on which level the user chooses to play
     let levelImageSrc;
     let characters = [];
     switch(props.level) {
@@ -36,7 +39,6 @@ const Level = (props) => {
         case 3:
             levelImageSrc = levelThreeImage;
             characters = [
-                {name: 'Waldo', charSrc: waldo},
                 {name: 'Gandalf', charSrc: gandalf},
                 {name: 'Aragorn', charSrc: aragorn},
                 {name: 'Boromir', charSrc: boromir},
@@ -54,9 +56,41 @@ const Level = (props) => {
             break;
     }
 
+    // State handlers for setting popup list active status, popup list coordinates, an imageRect object with info about width and length
+    //of level image, and relative + actual coordinates for each character in the image
     const [listActive, setListActive] = useState(false);
     const [popupCoordinates, setPopupCoordinates] = useState({x: -1, y: -1});
+    const [imageRect, setImageRect] = useState({});
+    const [relativeCoordinates, setRelativeCoordinates] = useState([]);
+    const [coordinates, setCoordinates] = useState([]);
 
+    // Update imageRect and actual coordinates when level image changes size.
+    useEffect(() => {
+        // reset imageRect when window resizes
+        const handleResize = () => {
+            let rect = document.querySelector('.game-image-container').getBoundingClientRect();
+            setImageRect(rect);
+
+            let newActualCoordinates = [];
+            relativeCoordinates.forEach(elem => {
+                newActualCoordinates.push({
+                    name: elem.name,
+                    x: elem.x * rect.width,
+                    y: elem.y * rect.height
+                });
+            });
+
+            setCoordinates(newActualCoordinates);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    })    
+
+    // Toggle the popupList -- to be used inside click handler
     const toggleListActive = () => {
         if(listActive) {
             setListActive(false);
@@ -65,8 +99,32 @@ const Level = (props) => {
         }
     }
 
+    // We have to wait until image is loaded to set imageRect otherwise imageRect will contain incorrect values.
+    // We can also set the inital character coordinates here as well.
+    const handleImageLoad = () => {
+        // Set DOMRect
+        let rect = document.querySelector('.game-image-container').getBoundingClientRect();
+        setImageRect(rect);
+
+        // Get character coordinates from the database and convert them to the correct values based on the current image size
+        getCharacterLocations(props.level).then(result => {
+            let newCoordinates = [];
+
+            result.forEach(elem => {
+                newCoordinates.push({
+                    name: elem.name,
+                    x: elem.x * rect.width,
+                    y: elem.y * rect.height
+                });
+            });
+
+            // set both relative and acutal coordinates since relative coordinates will be used when updating coordinates on resize
+            setRelativeCoordinates(result);
+            setCoordinates(newCoordinates);
+        })
+    }
+
     const handleClick = (e) => {
-        let imageRect = e.target.parentElement.getBoundingClientRect();
         setPopupCoordinates({x: e.clientX - imageRect.left - 100, y: e.clientY - imageRect.top - 30});
         toggleListActive();
     }
@@ -84,8 +142,9 @@ const Level = (props) => {
                 <div className="timer"></div>
             </div>
             <div className="game-image-container">
-                <img src={levelImageSrc} alt="Game Level" onClick={handleClick} />
+                <img src={levelImageSrc} alt="Game Level" onClick={handleClick} onLoad={handleImageLoad} />
                 <PopupList active={listActive} coordinates={popupCoordinates} characters={characters}></PopupList>
+                <CharacterMarker markers={coordinates}></CharacterMarker>
             </div>
         </div>
     )
