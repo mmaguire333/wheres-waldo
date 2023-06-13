@@ -29,7 +29,7 @@ const LevelCard = (props) => {
             break;
         case 2: 
             imageSrc = levelTwoImage;
-            difficulty = 'Medium';
+            difficulty = 'Hard';
             title = 'Waldo at the Beach';
             characters = [
                 {name: 'Waldo', charSrc: waldo},
@@ -39,10 +39,9 @@ const LevelCard = (props) => {
             break;
         case 3:
             imageSrc = levelThreeImage;
-            difficulty = 'Hard';
+            difficulty = 'Almost Impossible';
             title = 'Lord of the Rings Edition';
             characters = [
-                {name: 'Waldo', charSrc: waldo},
                 {name: 'Gandalf', charSrc: gandalf},
                 {name: 'Aragorn', charSrc: aragorn},
                 {name: 'Boromir', charSrc: boromir},
@@ -52,7 +51,7 @@ const LevelCard = (props) => {
                 {name: 'Sam', charSrc: sam},
                 {name: 'Merry', charSrc: merry},
                 {name: 'Pippin', charSrc: pippin}
-            ]
+            ];
             break;
         default: 
             imageSrc = '';
