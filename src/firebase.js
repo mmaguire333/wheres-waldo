@@ -1,3 +1,6 @@
+import { initializeApp } from 'firebase/app';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+
 const firebaseConfig = {
     apiKey: "AIzaSyA-8t4hhVFgPX-GDwG5bT-386vvK1Lkqyo",
     authDomain: "where-s-waldo-8e944.firebaseapp.com",
@@ -7,12 +10,33 @@ const firebaseConfig = {
     appId: "1:1030932198638:web:5fb1c0909cda2ccd546fff"
 }
 
-export function getFirebaseConfig() {
-    if (!firebaseConfig || !firebaseConfig.apiKey) {
-        // eslint-disable-next-line no-useless-concat
-        throw new Error('No Firebase configuration object provided.' + '\n' +
-        'Add your web app\'s configuration object to firebase-config.js');
-      } else {
-        return firebaseConfig;
-      }
+// Initalize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+
+async function getCharacterLocations(level) {
+    let query;
+    let characterLocations = [];
+
+    switch(level) {
+        case 1: 
+            query = await getDocs(collection(db, 'Level One'));
+            break;
+        case 2:
+            query = await getDocs(collection(db, 'Level Two'));
+            break;
+        case 3:
+            query = await getDocs(collection(db, 'Level Three'));
+            break;
+        default:
+            query = null;
+    }
+    
+    query.forEach(doc => characterLocations.push(doc.data()));
+    return characterLocations;
 }
+
+export { getCharacterLocations };
