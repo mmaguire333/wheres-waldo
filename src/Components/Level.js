@@ -158,6 +158,9 @@ const Level = (props) => {
 
         // TODO -- display success or failure message and make character preview images translucent on success
 
+        // Reduce character preview image opacity on being discovered
+        document.querySelector(`.${clickedCharacterName.replace(/\s+/g, '-').toLowerCase()}-image-preview`).style.opacity = 0.3;
+
         // close list on selecting character
         toggleListActive();
     }
@@ -168,7 +171,7 @@ const Level = (props) => {
                 <div className="character-previews">
                     {characters.map((char) => {
                         return (
-                            <img src={char.charSrc} alt={char.name} key={`level-${props.level}-${char.name}`} />
+                            <img className={`${char.name.replace(/\s+/g, '-').toLowerCase()}-image-preview`} src={char.charSrc} alt={char.name} key={`level-${props.level}-${char.name}`} />
                         );
                     })}
                 </div>
