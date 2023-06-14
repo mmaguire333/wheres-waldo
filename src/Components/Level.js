@@ -153,13 +153,13 @@ const Level = (props) => {
                 } else {
                     return char;
                 }
-            }))
+            }));
+
+            // Reduce character preview image opacity on being discovered
+            document.querySelector(`.${clickedCharacterName.replace(/\s+/g, '-').toLowerCase()}-image-preview`).style.opacity = 0.3;
         }
 
         // TODO -- display success or failure message and make character preview images translucent on success
-
-        // Reduce character preview image opacity on being discovered
-        document.querySelector(`.${clickedCharacterName.replace(/\s+/g, '-').toLowerCase()}-image-preview`).style.opacity = 0.3;
 
         // close list on selecting character
         toggleListActive();
