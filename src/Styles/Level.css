@@ -17,11 +17,14 @@
 }
 
 .character-previews {
-    display: flex;
-    gap: 20px;
+    width: 70%;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
 }
 
 .character-previews > img {
     height: 60px;
     border-radius: 3px;
+    justify-self: center;
 }
