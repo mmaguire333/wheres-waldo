@@ -8,7 +8,7 @@ const PopupList = (props) => {
                 <ul className="list">
                     {props.characters.map((char) => {
                         return (
-                            <li key={char.name}>
+                            <li key={char.name} onClick={props.updateDiscoveredOnClick}>
                                 <p>{char.name}</p>
                                 <img src={char.charSrc} alt={char.name} />
                             </li>
