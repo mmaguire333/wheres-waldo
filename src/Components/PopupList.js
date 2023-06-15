@@ -5,7 +5,7 @@ const PopupList = (props) => {
         return (
             <div className="PopupList" style={{left: props.coordinates.x, top: props.coordinates.y}}>
                 <div className="circle"></div>
-                <ul className="list">
+                <ul className="list" style={{transform: `translate(${props.offset}px, 0px)`}}>
                     {props.characters.map((char) => {
                         return (
                             <li key={char.name} onClick={props.updateDiscoveredOnClick}>
