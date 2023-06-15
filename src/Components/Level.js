@@ -64,6 +64,7 @@ const Level = (props) => {
     const [listActive, setListActive] = useState(false);
     const [clickCoordinates, setClickCoordinates] = useState({x: -1, y: -1});
     const [popupCoordinates, setPopupCoordinates] = useState({x: -1, y: -1});
+    const [popupOffset, setPopupOffset] = useState(0);
     const [imageRect, setImageRect] = useState({});
     const [relativeCoordinates, setRelativeCoordinates] = useState([]);
     const [coordinates, setCoordinates] = useState([]);
@@ -130,10 +131,20 @@ const Level = (props) => {
             setListActive(true);
         }
     }
-
     
     const handleClick = (e) => {
+        // Handle offset due to scroling
         let vertOffset = document.documentElement.scrollTop;
+
+        // Handle PopupList appearing off screen
+        if(e.clientX - 100 < imageRect.left) {
+            setPopupOffset(imageRect.left - (e.clientX - 100));
+        } else if(e.clientX + 100 > imageRect.right) {
+            setPopupOffset(-1 * (e.clientX + 100 - imageRect.right));
+        } else {
+            setPopupOffset(0);
+        }
+
         // clickCoordinates are relative to the level image
         setClickCoordinates({x: e.clientX - imageRect.left, y: e.clientY - imageRect.top + vertOffset});
 
@@ -201,7 +212,7 @@ const Level = (props) => {
             </div>
             <div className="game-image-container">
                 <img src={levelImageSrc} alt="Game Level" onClick={handleClick} onLoad={handleImageLoad} />
-                <PopupList active={listActive} coordinates={popupCoordinates} characters={characters} updateDiscoveredOnClick={updateDiscoveredOnClick}></PopupList>
+                <PopupList active={listActive} coordinates={popupCoordinates} offset={popupOffset} characters={characters} updateDiscoveredOnClick={updateDiscoveredOnClick}></PopupList>
                 <CharacterMarker markerCoordinates={coordinates} characters={characters}></CharacterMarker>
             </div>
         </div>
