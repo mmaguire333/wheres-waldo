@@ -1,3 +1,7 @@
+.Level {
+    position: relative;
+}
+
 .game-image-container, .level-header {
     width: 95vw;
     margin: auto;
