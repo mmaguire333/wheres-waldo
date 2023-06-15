@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getCharacterLocations } from '../firebase';
 import PopupList from './PopupList';
 import CharacterMarker from './CharacterMarker';
+import MessagePopup from './MessagePopup';
 import levelOneImage from '../Assets/Level-Images/waldo-easy-level.png';
 import levelTwoImage from '../Assets/Level-Images/waldo-beach-level.jpeg';
 import levelThreeImage from '../Assets/Level-Images/find-the-fellowship.jpg';
@@ -59,14 +60,16 @@ const Level = (props) => {
     // Character state declaration goes here to prevent too many re-renders error
     const [characters, setCharacters] = useState(charArray);
     
-    // State handlers for setting popup list active status, popup list coordinates, an imageRect object with info about width and length
-    //of level image, and relative + actual coordinates for each character in the image
+    // State handlers for dealing with the popup list, the level image, coordinates of various types, and the popup message
     const [listActive, setListActive] = useState(false);
     const [clickCoordinates, setClickCoordinates] = useState({x: -1, y: -1});
     const [popupCoordinates, setPopupCoordinates] = useState({x: -1, y: -1});
     const [imageRect, setImageRect] = useState({});
     const [relativeCoordinates, setRelativeCoordinates] = useState([]);
     const [coordinates, setCoordinates] = useState([]);
+    const [messageActive, setMessageActive] = useState(false);
+    const [discoveredCharacter, setDiscoveredCharacter] = useState('');
+    const [messageSuccess, setMessageSuccess] = useState(false);
 
     // We have to wait until image is loaded to set imageRect otherwise imageRect will contain incorrect values.
     // We can also set the inital character coordinates here as well.
@@ -157,9 +160,27 @@ const Level = (props) => {
 
             // Reduce character preview image opacity on being discovered
             document.querySelector(`.${clickedCharacterName.replace(/\s+/g, '-').toLowerCase()}-image-preview`).style.opacity = 0.3;
-        }
 
-        // TODO -- display success or failure message and make character preview images translucent on success
+            // Activate popup message with message for successfully finding character
+            setMessageActive(true);
+            setDiscoveredCharacter(clickedCharacterName);
+            setMessageSuccess(true);
+
+            // Deactivate popup message after 3 seconds
+            setTimeout(() => {
+                setMessageActive(false)
+            }, 2000);
+        } else {
+            // Activate popup message with message for unsuccesfully identifying character
+            setMessageActive(true);
+            setDiscoveredCharacter(clickedCharacterName);
+            setMessageSuccess(false);
+
+            // Deactivate popup message after 3 seconds
+            setTimeout(() => {
+                setMessageActive(false)
+            }, 2000);
+        }
 
         // close list on selecting character
         toggleListActive();
@@ -167,6 +188,7 @@ const Level = (props) => {
 
     return (
         <div className="Level">
+            <MessagePopup active={messageActive} character={discoveredCharacter} success={messageSuccess}></MessagePopup>
             <div className="level-header">
                 <div className="character-previews">
                     {characters.map((char) => {
