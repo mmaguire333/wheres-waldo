@@ -1,5 +1,13 @@
 .MessagePopup {
     position: absolute;
-    left: 50vw;
-    top: 100px;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, 0%);
+    background-color: lightgray;
+    border: 1px solid black;
+    z-index: 2;
+}
+
+.MessagePopup > p {
+    font-size: 16px;
 }
