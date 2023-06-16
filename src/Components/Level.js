@@ -3,6 +3,7 @@ import { getCharacterLocations } from '../firebase';
 import PopupList from './PopupList';
 import CharacterMarker from './CharacterMarker';
 import MessagePopup from './MessagePopup';
+import WinForm from './WinForm';
 import levelOneImage from '../Assets/Level-Images/waldo-easy-level.png';
 import levelTwoImage from '../Assets/Level-Images/waldo-beach-level.jpeg';
 import levelThreeImage from '../Assets/Level-Images/find-the-fellowship.jpg';
@@ -60,7 +61,7 @@ const Level = (props) => {
     // Character state declaration goes here to prevent too many re-renders error
     const [characters, setCharacters] = useState(charArray);
     
-    // State handlers for dealing with the popup list, the level image, coordinates of various types, and the popup message
+    // State handlers for dealing with the popup list, the level image, coordinates of various types, the popup message, the timer, and the win form
     const [listActive, setListActive] = useState(false);
     const [clickCoordinates, setClickCoordinates] = useState({x: -1, y: -1});
     const [popupCoordinates, setPopupCoordinates] = useState({x: -1, y: -1});
@@ -73,6 +74,7 @@ const Level = (props) => {
     const [messageSuccess, setMessageSuccess] = useState(false);
     const [timer, setTimer] = useState(0);
     const [timerRunning, setTimerRunning] = useState(false);
+    const [winFormActive, setWinFormActive] = useState(false);
 
     // We have to wait until image is loaded to set imageRect otherwise imageRect will contain incorrect values.
     // We can also set the inital character coordinates here as well.
@@ -202,10 +204,11 @@ const Level = (props) => {
                 setMessageActive(false)
             }, 2000);
 
-            // If the user has discovered all the characters, stop the timer
+            // If the user has discovered all the characters, stop the timer and activate the win form
             let undiscoveredCharacters = characters.filter(char => (char.name !== clickedCharacterName) && (char.discovered === false));
             if(undiscoveredCharacters.length === 0) {
                 setTimerRunning(false);
+                setWinFormActive(true);
             }
         } else {
             // Activate popup message with message for unsuccesfully identifying character
@@ -226,6 +229,7 @@ const Level = (props) => {
     return (
         <div className="Level">
             <MessagePopup active={messageActive} character={discoveredCharacter} success={messageSuccess}></MessagePopup>
+            <WinForm active={winFormActive}></WinForm>
             <div className="level-header">
                 <div className="character-previews">
                     {characters.map((char) => {
