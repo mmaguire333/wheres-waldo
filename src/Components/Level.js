@@ -229,7 +229,7 @@ const Level = (props) => {
     return (
         <div className="Level">
             <MessagePopup active={messageActive} character={discoveredCharacter} success={messageSuccess}></MessagePopup>
-            <WinForm active={winFormActive}></WinForm>
+            <WinForm active={winFormActive} score={timer} level={props.level}></WinForm>
             <div className="level-header">
                 <div className="character-previews">
                     {characters.map((char) => {
