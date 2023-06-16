@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, addDoc, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA-8t4hhVFgPX-GDwG5bT-386vvK1Lkqyo",
@@ -39,4 +39,16 @@ async function getCharacterLocations(level) {
     return characterLocations;
 }
 
-export { getCharacterLocations };
+async function uploadUserScore(name, score, level) {
+    try {
+        await addDoc(collection(db, 'User Scores'), {
+            level: level,
+            name: name,
+            score: score
+        });
+    } catch(e) {
+        console.log('Error adding document: ', e);
+    }
+}
+
+export { getCharacterLocations, uploadUserScore };
