@@ -71,10 +71,15 @@ const Level = (props) => {
     const [messageActive, setMessageActive] = useState(false);
     const [discoveredCharacter, setDiscoveredCharacter] = useState('');
     const [messageSuccess, setMessageSuccess] = useState(false);
+    const [timer, setTimer] = useState(0);
+    const [timerRunning, setTimerRunning] = useState(false);
 
     // We have to wait until image is loaded to set imageRect otherwise imageRect will contain incorrect values.
     // We can also set the inital character coordinates here as well.
     const handleImageLoad = () => {
+        // Start the timer running
+        setTimerRunning(true);
+
         // Set DOMRect
         let rect = document.querySelector('.game-image-container').getBoundingClientRect();
         setImageRect(rect);
@@ -96,6 +101,21 @@ const Level = (props) => {
             setCoordinates(newCoordinates);
         })
     }
+
+    // Handle the timer
+    useEffect(() => {
+        let intervalId;
+        if(timerRunning) {
+            intervalId = setInterval(() => {
+                setTimer(prevTime => prevTime + 1);
+            }, 1000)
+        }
+
+        return () => {
+            clearInterval(intervalId);
+        }
+        
+    }, [timerRunning]);
 
     // Update imageRect and actual coordinates when level image changes size.
     useEffect(() => {
@@ -181,6 +201,12 @@ const Level = (props) => {
             setTimeout(() => {
                 setMessageActive(false)
             }, 2000);
+
+            // If the user has discovered all the characters, stop the timer
+            let undiscoveredCharacters = characters.filter(char => (char.name !== clickedCharacterName) && (char.discovered === false));
+            if(undiscoveredCharacters.length === 0) {
+                setTimerRunning(false);
+            }
         } else {
             // Activate popup message with message for unsuccesfully identifying character
             setMessageActive(true);
@@ -208,7 +234,10 @@ const Level = (props) => {
                         );
                     })}
                 </div>
-                <div className="timer"></div>
+                <div className="timer">
+                    <p className="timer-title">Time</p>
+                    <p className="time-value">{timer >= 3600 ? `${Math.floor(timer / 3600)}:` : ''}{timer >= 60 ? `${Math.floor(timer / 60) % 60 < 10 ? `0${Math.floor(timer / 60) % 60}` : Math.floor(timer / 60) % 60}:` : ''}{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}</p>
+                </div>
             </div>
             <div className="game-image-container">
                 <img src={levelImageSrc} alt="Game Level" onClick={handleClick} onLoad={handleImageLoad} />
