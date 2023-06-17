@@ -36,20 +36,23 @@ const Leaderboard = (props) => {
     return (
         <div className="Leaderboard">
             <h2>{title} Leaderboard</h2>
-            <ol className="leader-list">
-                {highScores.map((scoreItem) => {
+            <ul className="leader-list">
+                {highScores.map((scoreItem, index) => {
                     return (
                         <li key={uniqid()}>
-                            <p>Name: {scoreItem.name}</p>
-                            <p>
-                                Time: {Math.floor(scoreItem.score / 3600) > 0 ? `${Math.floor(scoreItem.score / 3600)}:` : ''}
-                                        {Math.floor(scoreItem.score / 3600) > 0 && Math.floor(scoreItem.score / 60) < 10 ? `0${Math.floor(scoreItem.score / 60)}` : Math.floor(scoreItem.score / 60)}
-                                        :{scoreItem.score % 60 < 10 ? `0${scoreItem.score % 60}` : scoreItem.score % 60}
-                            </p>
+                            <p>{index + 1}.</p>
+                            <div className="score-item">
+                                <p>{scoreItem.name}</p>
+                                <p>
+                                    {Math.floor(scoreItem.score / 3600) > 0 ? `${Math.floor(scoreItem.score / 3600)}:` : ''}
+                                            {Math.floor(scoreItem.score / 3600) > 0 && Math.floor(scoreItem.score / 60) < 10 ? `0${Math.floor(scoreItem.score / 60)}` : Math.floor(scoreItem.score / 60)}
+                                            :{scoreItem.score % 60 < 10 ? `0${scoreItem.score % 60}` : scoreItem.score % 60}
+                                </p>
+                            </div>
                         </li>
                     )
                 })}
-            </ol>
+            </ul>
         </div>
     )
 }

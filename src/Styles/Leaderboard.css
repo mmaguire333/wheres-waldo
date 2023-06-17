@@ -2,3 +2,21 @@
     border: 1px solid black;
     width: 300px;
 }
+
+.leader-list {
+    padding: 0;
+}
+
+.leader-list > li {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.score-item {
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
