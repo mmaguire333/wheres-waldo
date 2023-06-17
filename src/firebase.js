@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { collection, getDocs, addDoc, getFirestore } from 'firebase/firestore';
+import { collection, query, where, limit, orderBy, getDocs, addDoc, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA-8t4hhVFgPX-GDwG5bT-386vvK1Lkqyo",
@@ -51,4 +51,28 @@ async function uploadUserScore(name, score, level) {
     }
 }
 
-export { getCharacterLocations, uploadUserScore };
+async function getHighScores(level) {
+    let highScoresArray = [];
+    let highScores;
+
+    switch(level) {
+        case 1:
+            highScores = query(collection(db, 'User Scores'), where('level', '==', 1), orderBy('score'), limit(5));
+            break;
+        case 2:
+            highScores = query(collection(db, 'User Scores'), where('level', '==', 2), orderBy('score'), limit(5));
+            break;
+        case 3:
+            highScores = query(collection(db, 'User Scores'), where('level', '==', 3), orderBy('score'), limit(5));
+            break;
+        default:
+            highScores = null;
+            break;
+    }
+
+    const querySnapshot = await getDocs(highScores);
+    querySnapshot.forEach(scoreDoc => highScoresArray.push(scoreDoc.data()));
+    return highScoresArray
+}
+
+export { getCharacterLocations, uploadUserScore, getHighScores };
