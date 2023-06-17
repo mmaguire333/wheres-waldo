@@ -1,5 +1,6 @@
 .level-container {
     margin: auto;
+    margin-bottom: 50px;
     display: flex;
     justify-content: space-evenly;
 }
@@ -11,4 +12,11 @@
 
 .link:hover {
     transform: scale(1.01);
+}
+
+.leaderboards-container {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 40px;
+    margin-right: 40px;
 }
