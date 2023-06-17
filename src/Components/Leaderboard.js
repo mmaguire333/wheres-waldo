@@ -41,7 +41,11 @@ const Leaderboard = (props) => {
                     return (
                         <li key={uniqid()}>
                             <p>Name: {scoreItem.name}</p>
-                            <p>Score: {scoreItem.score}</p>
+                            <p>
+                                Time: {Math.floor(scoreItem.score / 3600) > 0 ? `${Math.floor(scoreItem.score / 3600)}:` : ''}
+                                        {Math.floor(scoreItem.score / 3600) > 0 && Math.floor(scoreItem.score / 60) < 10 ? `0${Math.floor(scoreItem.score / 60)}` : Math.floor(scoreItem.score / 60)}
+                                        :{scoreItem.score % 60 < 10 ? `0${scoreItem.score % 60}` : scoreItem.score % 60}
+                            </p>
                         </li>
                     )
                 })}
