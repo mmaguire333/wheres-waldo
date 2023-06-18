@@ -8,7 +8,7 @@ const PopupList = (props) => {
                 <ul className="list" style={{transform: `translate(${props.offset}px, 0px)`}}>
                     {props.characters.map((char) => {
                         return (
-                            <li key={char.name} onClick={props.updateDiscoveredOnClick}>
+                            <li key={char.name} onClick={() => props.updateDiscoveredOnClick(char.name)}>
                                 <p>{char.name}</p>
                                 <img src={char.charSrc} alt={char.name} />
                             </li>
