@@ -44,10 +44,12 @@
 .list > li > img {
     width: 30px;
     margin-right: 5px;
+    user-select: none;
 }
 
 .list > li > p {
     margin-left: 5px;
+    user-select: none;
 }
 
 .circle {

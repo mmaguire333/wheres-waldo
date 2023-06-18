@@ -12,6 +12,10 @@
     position: relative;
 }
 
+.game-image-container > img {
+    user-select: none;
+}
+
 .level-header {
     margin-bottom: 10px;
     display: flex;
