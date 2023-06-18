@@ -175,16 +175,16 @@ const Level = (props) => {
         toggleListActive();
     }
 
-    // If the coordinates of the selected character from the dropdown are close enough to users click coordinates then update characters discovered value
-    const updateDiscoveredOnClick = (e) => {
-        // Get characters name from dropdown list item DOM element and find coordinates based on name
-        let clickedCharacterName = e.target.firstChild.textContent;
-        let clickedCharacterCoordinates = coordinates.find(char => char.name === clickedCharacterName);
+    // If the coordinates of the selected character from the dropdown are close enough to users click coordinates then update characters discovered value,
+    // handle the popup message, and check for/handle win.
+    const updateDiscoveredOnClick = (name) => {
+        // Get characters coordinates based on name
+        let clickedCharacterCoordinates = coordinates.find(char => char.name === name);
 
         // If character coordinates are within the displayed circle then update that charcter as being discovered
         if(Math.sqrt(Math.pow(clickCoordinates.x - clickedCharacterCoordinates.x, 2) + Math.pow(clickCoordinates.y - clickedCharacterCoordinates.y, 2)) <= 25) {
             setCharacters(characters.map((char) => {
-                if(char.name === clickedCharacterName) {
+                if(char.name === name) {
                     return {name: char.name, charSrc: char.charSrc, discovered: true}
                 } else {
                     return char;
@@ -192,11 +192,11 @@ const Level = (props) => {
             }));
 
             // Reduce character preview image opacity on being discovered
-            document.querySelector(`.${clickedCharacterName.replace(/\s+/g, '-').toLowerCase()}-image-preview`).style.opacity = 0.3;
+            document.querySelector(`.${name.replace(/\s+/g, '-').toLowerCase()}-image-preview`).style.opacity = 0.3;
 
             // Activate popup message with message for successfully finding character
             setMessageActive(true);
-            setDiscoveredCharacter(clickedCharacterName);
+            setDiscoveredCharacter(name);
             setMessageSuccess(true);
 
             // Deactivate popup message after 3 seconds
@@ -205,7 +205,7 @@ const Level = (props) => {
             }, 2000);
 
             // If the user has discovered all the characters, stop the timer and activate the win form
-            let undiscoveredCharacters = characters.filter(char => (char.name !== clickedCharacterName) && (char.discovered === false));
+            let undiscoveredCharacters = characters.filter(char => (char.name !== name) && (char.discovered === false));
             if(undiscoveredCharacters.length === 0) {
                 setTimerRunning(false);
                 setWinFormActive(true);
@@ -213,7 +213,7 @@ const Level = (props) => {
         } else {
             // Activate popup message with message for unsuccesfully identifying character
             setMessageActive(true);
-            setDiscoveredCharacter(clickedCharacterName);
+            setDiscoveredCharacter(name);
             setMessageSuccess(false);
 
             // Deactivate popup message after 3 seconds
