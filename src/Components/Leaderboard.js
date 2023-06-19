@@ -13,7 +13,7 @@ const Leaderboard = (props) => {
             title = 'Waldo at the Beach';
             break;
         case 3:
-            title = 'Lord of the Ring Edition';
+            title = 'Lord of the Rings Edition';
             break;
         default:
             title = '';
