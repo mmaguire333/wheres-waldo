@@ -1,5 +1,6 @@
 .Level {
     position: relative;
+    margin-bottom: 50px;
 }
 
 .game-image-container, .level-header {
@@ -17,6 +18,7 @@
 }
 
 .level-header {
+    margin-top: 20px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
@@ -42,6 +44,9 @@
 
 .timer {
     border: 1px solid black;
+    border-radius: 5px;
+    background-color: #0288E1;
+    color: white;
 }
 
 .timer-title{

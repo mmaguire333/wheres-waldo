@@ -1,6 +1,10 @@
 .Leaderboard {
-    border: 1px solid black;
     width: 300px;
+    background-color: white;
+}
+
+.Leaderboard > h2 {
+    text-decoration: underline;
 }
 
 .leader-list {

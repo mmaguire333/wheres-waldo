@@ -2,15 +2,54 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #EF161F;
+    color: aliceblue;
 }
 
-.Navbar > h1 {
+#waldo-nav-image {
+    width: 50px;
+}
+
+.container-left {
     margin-left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .home-button {
-    width: 200px;
+    width: 120px;
     height: 50px;
     font-size: 25px;
     margin-right: 30px;
+    background-color: #0288E1;
+    color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.home-button:hover {
+    transform: scale(1.03);
+}
+
+@media screen and (max-width: 500px) {
+    .container-left {
+        margin-left: 10px;
+        gap: 5px;
+    }
+
+    .container-left > h1 {
+        font-size: 22px;
+    }
+
+    #waldo-nav-image {
+        width: 30px;
+    }
+
+    .home-button {
+        margin-right: 10px;
+        width: 70px;
+        height: 30px;
+        font-size: 18px;
+    }
 }
