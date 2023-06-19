@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read of location data in each level collection
+    match /Level%20One/{document} {
+    	allow read: if true
+    }
+    
+    match /Level%20Two/{document} {
+    	allow read: if true
+    }
+    
+    match /Level%20Three/{document} {
+    	allow read: if true
+    }
+    
+    // Allow public read and write of scores
+    match /User%20Scores/{document} {
+    	allow read, write: if true
+    }
+  }
+}
